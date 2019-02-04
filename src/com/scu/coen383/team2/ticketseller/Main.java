@@ -1,10 +1,14 @@
 package com.scu.coen383.team2.ticketseller;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
+    static Random generator = new Random(1234);
+
     public static void main(String[] args) {
         System.out.println("Hello World");
+
         int customerCnt = 0;
         Scanner userInput = new Scanner(System.in);
         System.out.println("Enter the number of customers per seller: ");
@@ -32,9 +36,18 @@ public class Main {
                 sellers[numSeller] = new SellerL(seating, "L" + (numSeller - 3), lock);
         }
 
-        addNewCustomers(sellers, customerCnt);
+//        addNewCustomers(sellers, customerCnt, SEED);
 
+        CustomerGenerator.generateJobs(sellers, customerCnt, generator);
+        // print all customer, for test
+        for (int i = 0; i < sellers.length; i++) {
+            System.out.format("row %d: ", i);
+            for (Customer c: sellers[i].customers ) {
+                System.out.format("%-3d ", c.getArrivalTime());
+            }
+            System.out.println("\n");
 
+        }
 
     }
 
@@ -54,18 +67,19 @@ public class Main {
         return seating;
     }
 
-    public static Seller[] addNewCustomers(Seller[] allSellers, int numAdd)
+    public void addNewCustomers(Seller[] allSellers, int numAdd, int seed)
     {
+
         for (int numSeller = 0; numSeller < allSellers.length; numSeller++)
         {
             for (int count = 0; count < numAdd; count++)
             {
-                Customer c = new Customer(numSeller);
+                int arrivalTime = generator.nextInt(60);
+                Customer c = new Customer(numSeller, arrivalTime);
                 allSellers[numSeller].addCustomer(c);
             }
             allSellers[numSeller].sortQueue();
         }
-        return allSellers;
+//        return allSellers;
     }
-
 }

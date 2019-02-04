@@ -8,9 +8,9 @@ public class Customer implements Comparable<Customer> {
     private String _ticket;
 
 
-    public Customer(int id) {
+    public Customer(int id, int arrivalTime) {
         _id = id;
-        _arrivalTime = 0;//random
+        _arrivalTime = arrivalTime;//random
         _seatNum = -1;
     }
 
