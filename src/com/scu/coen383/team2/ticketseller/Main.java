@@ -26,6 +26,8 @@ public class Main {
         Seat[][] seating = createSeating(maxRows, maxCols);
 
         Seller[] sellers = new Seller[10];
+
+        // initialize 10 sellers
         for (int numSeller = 0; numSeller < 10; numSeller++)
         {
             if (numSeller == 0)
@@ -36,9 +38,9 @@ public class Main {
                 sellers[numSeller] = new SellerL(seating, "L" + (numSeller - 3), lock);
         }
 
-//        addNewCustomers(sellers, customerCnt, SEED);
+        // generate a customer queue for each seller
+        Generator.generateCustomers(sellers, customerCnt, generator);
 
-        CustomerGenerator.generateJobs(sellers, customerCnt, generator);
         // print all customer, for test
         for (int i = 0; i < sellers.length; i++) {
             System.out.format("row %d: ", i);
@@ -65,21 +67,5 @@ public class Main {
             }
         }
         return seating;
-    }
-
-    public void addNewCustomers(Seller[] allSellers, int numAdd, int seed)
-    {
-
-        for (int numSeller = 0; numSeller < allSellers.length; numSeller++)
-        {
-            for (int count = 0; count < numAdd; count++)
-            {
-                int arrivalTime = generator.nextInt(60);
-                Customer c = new Customer(numSeller, arrivalTime);
-                allSellers[numSeller].addCustomer(c);
-            }
-            allSellers[numSeller].sortQueue();
-        }
-//        return allSellers;
     }
 }
