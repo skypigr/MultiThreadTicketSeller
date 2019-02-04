@@ -32,7 +32,7 @@ public class Main {
         for (int numSeller = 0; numSeller < 10; numSeller++)
         {
             if (numSeller == 0)
-                sellers[numSeller] = new SellerH(seating, "H" + (numSeller + 1), lock, random);
+                sellers[numSeller] = new SellerH(seating, "H", lock, random);
             else if (numSeller >= 1 && numSeller < 4)
                 sellers[numSeller] = new SellerM(seating, "M" + (numSeller), lock, random);
             else if (numSeller >= 4 && numSeller < 10)
@@ -44,7 +44,7 @@ public class Main {
 
         // print all customer, for test
         for (int i = 0; i < sellers.length; i++) {
-            System.out.format("row %d: ", i);
+            System.out.format("%4s: ", sellers[i].sellerID);
             for (Customer c: sellers[i].customers ) {
                 System.out.format("%-3d ", c.getArrivalTime());
             }
