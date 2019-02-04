@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-    static Random generator = new Random(1234);
+    static Random random = new Random(1234);
 
     public static void main(String[] args) {
         System.out.println("Hello World");
@@ -23,7 +23,8 @@ public class Main {
 
         int maxRows = 10;
         int maxCols = 10;
-        Seat[][] seating = createSeating(maxRows, maxCols);
+        Seat[][] seating = new Seat[maxRows][maxCols];
+        Generator.generateSeats(seating, maxCols, maxCols);
 
         Seller[] sellers = new Seller[10];
 
@@ -31,15 +32,15 @@ public class Main {
         for (int numSeller = 0; numSeller < 10; numSeller++)
         {
             if (numSeller == 0)
-                sellers[numSeller] = new SellerH(seating, "H" + (numSeller + 1), lock);
+                sellers[numSeller] = new SellerH(seating, "H" + (numSeller + 1), lock, random);
             else if (numSeller >= 1 && numSeller < 4)
-                sellers[numSeller] = new SellerM(seating, "M" + (numSeller), lock);
+                sellers[numSeller] = new SellerM(seating, "M" + (numSeller), lock, random);
             else if (numSeller >= 4 && numSeller < 10)
-                sellers[numSeller] = new SellerL(seating, "L" + (numSeller - 3), lock);
+                sellers[numSeller] = new SellerL(seating, "L" + (numSeller - 3), lock, random);
         }
 
         // generate a customer queue for each seller
-        Generator.generateCustomers(sellers, customerCnt, generator);
+        Generator.generateCustomers(sellers, customerCnt, random);
 
         // print all customer, for test
         for (int i = 0; i < sellers.length; i++) {

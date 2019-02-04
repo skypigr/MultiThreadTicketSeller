@@ -13,7 +13,7 @@ public abstract class Seller implements Runnable {
 
     private Object lock;
     Queue<Customer> customers;
-    protected static Random r = new Random();
+//    protected static Random r = new Random();
     protected String sellerID;
     protected int serviceTime;      // time needed to process a ticket
     protected int ticketNum = 1;
