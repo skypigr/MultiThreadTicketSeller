@@ -35,6 +35,7 @@ public abstract class Seller implements Runnable {
         int hour = customer.getTime() / 60;
         int min = customer.getTime() % 60;
 
+        System.out.println("");
         String time = "";
         if (min < 10) time = hour + ":0" + min;
         else time = hour + ":" + min;
