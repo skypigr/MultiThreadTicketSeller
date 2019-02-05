@@ -1,16 +1,28 @@
 package com.scu.coen383.team2.ticketseller;
 
 import java.util.Random;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 public class SellerL extends Seller {
     private Object lock;
-    public SellerL(Seat[][] s, String sellerID, Object lk, Random r) {
+    private  CyclicBarrier gate;
+    public SellerL(Seat[][] s, String sellerID, Object lk, Random r, CyclicBarrier gate) {
         super(s, r.nextInt(4) + 4, sellerID, lk, System.currentTimeMillis());
         lock = lk;
+        this.gate = gate;
 
     }
 
     public void sell() {
+        try {
+            gate.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
+        }
+
         while (!customers.isEmpty()) {
             Customer customer;
             if (customers.isEmpty()) return;
@@ -51,7 +63,6 @@ public class SellerL extends Seller {
                     Thread.sleep(serviceTime * 1000);
                     update();
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }

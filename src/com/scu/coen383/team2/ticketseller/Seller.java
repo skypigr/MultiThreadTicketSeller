@@ -40,7 +40,7 @@ public abstract class Seller implements Runnable {
         if (min < 10) time = hour + ":0" + min;
         else time = hour + ":" + min;
         if (seat == null) System.out.println(time + "  " + sellerID + " - The concert is sold out.");
-        else System.out.println(time + "  " + sellerID + " - Success! Your seat is " + seat.getSeatNumber());
+        else System.out.println("#" + time + "  " + sellerID + " - Success! Your seat is " + seat.getSeatNumber());
 
         printSeating(this.seating, 10, 10);
     }
