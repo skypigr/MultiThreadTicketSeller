@@ -10,7 +10,7 @@ public abstract class Seller implements Runnable {
     protected long currentTime;
     protected Seat[][] seating;
     protected int[] soldSeatsEachRow;
-    protected int totalSold;
+    protected int[] totalSold;
     private Object lock;
     Queue<Customer> customers;
     protected String sellerID;
@@ -18,7 +18,7 @@ public abstract class Seller implements Runnable {
     protected int ticketNum = 1;
     protected int time = 0;
 
-    public Seller(Seat[][] seating, int[] soldSeatsEachRow, int  totalSold, int serviceTime, String sellerID, Object lock, long current_time) {
+    public Seller(Seat[][] seating, int[] soldSeatsEachRow, int[]  totalSold, int serviceTime, String sellerID, Object lock, long current_time) {
         customers = new LinkedList<>();
         this.soldSeatsEachRow = soldSeatsEachRow;
         this.serviceTime = serviceTime;

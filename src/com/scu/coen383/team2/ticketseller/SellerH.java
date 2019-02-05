@@ -9,7 +9,7 @@ public class SellerH extends Seller {
 
     private Object lock;
     private CyclicBarrier gate;
-    public SellerH(Seat[][] s, int[] soldSeatsEachRow, int totalSold, String sellerID, Object lk, Random r, CyclicBarrier gate) {
+    public SellerH(Seat[][] s, int[] soldSeatsEachRow, int[] totalSold, String sellerID, Object lk, Random r, CyclicBarrier gate) {
         super(s, soldSeatsEachRow,  totalSold, r.nextInt(2) + 1, sellerID, lk, System.currentTimeMillis());
         lock = lk;
         this.gate = gate;
@@ -28,7 +28,18 @@ public class SellerH extends Seller {
         while (!customers.isEmpty()) {
 
             Customer customer = null;
-            if (customers.isEmpty() || 100 <= totalSold) return;
+            if(customers.isEmpty() || 100 <= totalSold[0]){
+                return;
+            }
+            else if (currentTime < customers.peek().getArrivalTime()){
+                try {
+                    Thread.sleep(1 * 1000);
+                    update();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
             update();
 
             if(currentTime <= 59)
@@ -36,7 +47,6 @@ public class SellerH extends Seller {
             else
                 return;
             Seat seat = null;
-
 
             synchronized(lock) {
 
@@ -51,6 +61,7 @@ public class SellerH extends Seller {
                             seat = new Seat(seatNum);
                             assignSeat(customer, seat, i, soldSeatsEachRow[i]);
                             soldSeatsEachRow[i] ++;
+                            totalSold[0] ++;
                             printMsg(customer, seat);
                             customers.remove();
                             break find_seat;
@@ -70,19 +81,6 @@ public class SellerH extends Seller {
             }
 
             update();
-            if(customers.isEmpty()){
-                return;
-            }
-            else if (currentTime < customers.peek().getArrivalTime()){
-                try {
-                    Thread.sleep((customers.peek().getArrivalTime() - currentTime) * 1000);
-                    update();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
 
         }
     }

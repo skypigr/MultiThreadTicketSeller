@@ -27,7 +27,7 @@ public class Main {
         int maxRows = 10;
         int maxCols = 10;
         Seat[][] seating = new Seat[maxRows][maxCols];
-        int totalSold = 0;
+        int[] totalSold = new int[1];
         int[] soldSeatsEachRow = new int [maxRows];
         Generator.generateSeats(seating, maxCols, maxCols);
 
@@ -92,7 +92,6 @@ public class Main {
                 e.printStackTrace();
             }
         }
-
 
 //         print all customer, for test
         for (int i = 0; i < sellers.length; i++) {
