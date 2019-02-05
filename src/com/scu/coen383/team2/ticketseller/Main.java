@@ -106,19 +106,30 @@ public class Main {
         }
 
         // print out statistics
-        int nH = 0;
-        int nM = 0;
-        int nL = 0;
+        int pH = 0, nH = customerCnt;
+        int pM = 0, nM = customerCnt;
+        int pL = 0, nL = customerCnt;
+
         for (int numSeller = 0; numSeller < 10; numSeller++)
         {
-            if (numSeller == 0)
-                nH += customerCnt - sellers[numSeller].customers.size();
-            else if (numSeller >= 1 && numSeller < 4)
-                nM += customerCnt - sellers[numSeller].customers.size();
-            else if (numSeller >= 4 && numSeller < 10)
-                nL += customerCnt - sellers[numSeller].customers.size();
+            if (numSeller == 0) {
+                nH -= sellers[numSeller].customers.size();
+                pH += customerCnt - sellers[numSeller].customers.size();
+            }
+            else if (numSeller >= 1 && numSeller < 4) {
+                nM -= sellers[numSeller].customers.size();
+                pM += customerCnt - sellers[numSeller].customers.size();
+            }
+
+            else if (numSeller >= 4 && numSeller < 10) {
+                nL -= sellers[numSeller].customers.size();
+                pL += customerCnt - sellers[numSeller].customers.size();
+            }
+
         }
-        System.out.format("H:%3d, M:%3d, L:%3d", nH, nM, nL);
+
+        System.out.format("Ticket Sold:\nH:%3d, M:%3d, L:%3d\n", pH, pM, pL);
+        System.out.format("Customer Turned Away:\nH:%3d, M:%3d, L:%3d\n", nH, nM, nL);
 
     }
 }
