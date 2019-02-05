@@ -23,9 +23,9 @@ public class SellerL extends Seller {
             e.printStackTrace();
         }
 
-        while (!customers.isEmpty() || 100 <= totalSold[0]) {
+        while (!customers.isEmpty()) {
             Customer customer;
-            if(customers.isEmpty()){
+            if(customers.isEmpty() || 100 <= totalSold[0]){
                 return;
             }
             else if (currentTime < customers.peek().getArrivalTime()){
@@ -35,7 +35,6 @@ public class SellerL extends Seller {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
             // customer ready in the queue
             update();
