@@ -67,6 +67,20 @@ public class SellerL extends Seller {
                 }
             }
 
+            update();
+            if(customers.isEmpty()){
+                return;
+            }
+            else if (currentTime < customers.peek().getArrivalTime()){
+                try {
+                    Thread.sleep((customers.peek().getArrivalTime() - currentTime) * 1000);
+                    update();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
         }
     }
 
