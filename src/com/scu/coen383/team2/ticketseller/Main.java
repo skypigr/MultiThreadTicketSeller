@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
+import java.util.ArrayList;
 
 public class Main {
     static Random random = new Random(1234);
@@ -26,6 +27,7 @@ public class Main {
         int maxRows = 10;
         int maxCols = 10;
         Seat[][] seating = new Seat[maxRows][maxCols];
+        int totalSold = 0;
         int[] soldSeatsEachRow = new int [maxRows];
         Generator.generateSeats(seating, maxCols, maxCols);
 
@@ -36,11 +38,11 @@ public class Main {
         for (int numSeller = 0; numSeller < 10; numSeller++)
         {
             if (numSeller == 0)
-                sellers[numSeller] = new SellerH(seating, soldSeatsEachRow, "H" + (numSeller + 1), lock, random, gate);
+                sellers[numSeller] = new SellerH(seating, soldSeatsEachRow, totalSold, "H" + (numSeller + 1), lock, random, gate);
             else if (numSeller >= 1 && numSeller < 4)
-                sellers[numSeller] = new SellerM(seating, soldSeatsEachRow, "M" + (numSeller), lock, random, gate);
+                sellers[numSeller] = new SellerM(seating, soldSeatsEachRow, totalSold, "M" + (numSeller), lock, random, gate);
             else if (numSeller >= 4 && numSeller < 10)
-                sellers[numSeller] = new SellerL(seating, soldSeatsEachRow, "L" + (numSeller - 3), lock, random, gate);
+                sellers[numSeller] = new SellerL(seating, soldSeatsEachRow, totalSold, "L" + (numSeller - 3), lock, random, gate);
         }
 
 
@@ -101,6 +103,5 @@ public class Main {
             System.out.println("\n");
 
         }
-
     }
 }

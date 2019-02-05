@@ -7,8 +7,8 @@ import java.util.concurrent.CyclicBarrier;
 public class SellerM extends Seller {
     private Object lock;
     private CyclicBarrier gate;
-    public SellerM(Seat[][] s, int[] soldSeatsEachRow, String sellerID, Object lk, Random r, CyclicBarrier gate) {
-        super(s, soldSeatsEachRow, r.nextInt(2) + 1, sellerID, lk, System.currentTimeMillis());
+    public SellerM(Seat[][] s, int[] soldSeatsEachRow, int totalSold,String sellerID, Object lk, Random r, CyclicBarrier gate) {
+        super(s, soldSeatsEachRow,  totalSold,r.nextInt(2) + 1, sellerID, lk, System.currentTimeMillis());
         lock = lk;
         this.gate = gate;
     }
@@ -24,7 +24,7 @@ public class SellerM extends Seller {
 
         while (!customers.isEmpty()) {
             Customer customer;
-            if (customers.isEmpty()) return;
+            if (customers.isEmpty() || 100 <= totalSold) return;
 
 
             update();
