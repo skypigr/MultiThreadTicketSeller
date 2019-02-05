@@ -79,7 +79,7 @@ public abstract class Seller implements Runnable {
         for (int row = 0; row < maxRows; row++) {
             for (int col = 0; col < maxCols; col++) {
                 if (seating[row][col].isSeatEmpty())
-                    System.out.printf("%s ", "-");
+                    System.out.printf("%s ", "----");
                 else
                     System.out.printf("%s ", seating[row][col].getCustomer().getTicket());
             }

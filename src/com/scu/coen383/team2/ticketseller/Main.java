@@ -32,7 +32,7 @@ public class Main {
         for (int numSeller = 0; numSeller < 10; numSeller++)
         {
             if (numSeller == 0)
-                sellers[numSeller] = new SellerH(seating, "H", lock, random);
+                sellers[numSeller] = new SellerH(seating, "H" + (numSeller + 1), lock, random);
             else if (numSeller >= 1 && numSeller < 4)
                 sellers[numSeller] = new SellerM(seating, "M" + (numSeller), lock, random);
             else if (numSeller >= 4 && numSeller < 10)
@@ -43,6 +43,39 @@ public class Main {
         Generator.generateCustomers(sellers, customerCnt, random);
 
         // print all customer, for test
+        for (int i = 0; i < sellers.length; i++) {
+            System.out.format("%4s: ", sellers[i].sellerID);
+            for (Customer c: sellers[i].customers ) {
+                System.out.format("%-3d ", c.getArrivalTime());
+            }
+            System.out.println("\n");
+
+        }
+
+
+        // create a thread for each seller
+        Thread[] threads = new Thread[sellers.length];
+
+        // start all thread at same time
+        // TODO: make sure all thread start at the same time
+        for(int numSellers = 0; numSellers < sellers.length; numSellers++)
+        {
+            threads[numSellers] = new Thread(sellers[numSellers]);
+            threads[numSellers].start();
+
+        }
+
+        // wait for termination of each thread
+        for (int i = 0; i < threads.length ; i++) {
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+//         print all customer, for test
         for (int i = 0; i < sellers.length; i++) {
             System.out.format("%4s: ", sellers[i].sellerID);
             for (Customer c: sellers[i].customers ) {

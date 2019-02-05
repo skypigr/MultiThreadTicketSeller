@@ -2,7 +2,7 @@ package com.scu.coen383.team2.ticketseller;
 
 public class Customer implements Comparable<Customer> {
     private int _arrivalTime;
-    private int _time;
+    private int _time; // finishTime
     private int _seatNum;
     private int _id;
     private String _ticket;
