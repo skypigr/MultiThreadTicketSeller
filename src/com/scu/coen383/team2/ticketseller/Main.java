@@ -94,7 +94,8 @@ public class Main {
         }
 
 
-//         print all customer, for test
+        // print all customer, for test
+        System.out.println("\nRemaining Customer\n");
         for (int i = 0; i < sellers.length; i++) {
             System.out.format("%4s: ", sellers[i].sellerID);
             for (Customer c: sellers[i].customers ) {
@@ -103,5 +104,21 @@ public class Main {
             System.out.println("\n");
 
         }
+
+        // print out statistics
+        int nH = 0;
+        int nM = 0;
+        int nL = 0;
+        for (int numSeller = 0; numSeller < 10; numSeller++)
+        {
+            if (numSeller == 0)
+                nH += customerCnt - sellers[numSeller].customers.size();
+            else if (numSeller >= 1 && numSeller < 4)
+                nM += customerCnt - sellers[numSeller].customers.size();
+            else if (numSeller >= 4 && numSeller < 10)
+                nL += customerCnt - sellers[numSeller].customers.size();
+        }
+        System.out.format("H:%3d, M:%3d, L:%3d", nH, nM, nL);
+
     }
 }
