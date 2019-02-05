@@ -93,7 +93,13 @@ public class Main {
             }
         }
 
+
+
+        // print all customer, for test
+        System.out.println("\nRemaining Customer\n");
+
 //         print all customer, for test
+
         for (int i = 0; i < sellers.length; i++) {
             System.out.format("%4s: ", sellers[i].sellerID);
             for (Customer c: sellers[i].customers ) {
@@ -102,5 +108,32 @@ public class Main {
             System.out.println("\n");
 
         }
+
+        // print out statistics
+        int pH = 0, nH = 0;
+        int pM = 0, nM = 0;
+        int pL = 0, nL = 0;
+
+        for (int numSeller = 0; numSeller < 10; numSeller++)
+        {
+            if (numSeller == 0) {
+                nH += sellers[numSeller].customers.size();
+                pH += customerCnt - sellers[numSeller].customers.size();
+            }
+            else if (numSeller >= 1 && numSeller < 4) {
+                nM += sellers[numSeller].customers.size();
+                pM += customerCnt - sellers[numSeller].customers.size();
+            }
+
+            else if (numSeller >= 4 && numSeller < 10) {
+                nL += sellers[numSeller].customers.size();
+                pL += customerCnt - sellers[numSeller].customers.size();
+            }
+
+        }
+
+        System.out.format("Ticket Sold:\nH:%3d, M:%3d, L:%3d\n", pH, pM, pL);
+        System.out.format("Customer Turned Away:\nH:%3d, M:%3d, L:%3d\n", nH, nM, nL);
+
     }
 }
