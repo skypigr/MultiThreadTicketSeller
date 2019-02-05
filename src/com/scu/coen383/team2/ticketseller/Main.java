@@ -106,23 +106,23 @@ public class Main {
         }
 
         // print out statistics
-        int pH = 0, nH = customerCnt;
-        int pM = 0, nM = customerCnt;
-        int pL = 0, nL = customerCnt;
+        int pH = 0, nH = 0;
+        int pM = 0, nM = 0;
+        int pL = 0, nL = 0;
 
         for (int numSeller = 0; numSeller < 10; numSeller++)
         {
             if (numSeller == 0) {
-                nH -= sellers[numSeller].customers.size();
+                nH += sellers[numSeller].customers.size();
                 pH += customerCnt - sellers[numSeller].customers.size();
             }
             else if (numSeller >= 1 && numSeller < 4) {
-                nM -= sellers[numSeller].customers.size();
+                nM += sellers[numSeller].customers.size();
                 pM += customerCnt - sellers[numSeller].customers.size();
             }
 
             else if (numSeller >= 4 && numSeller < 10) {
-                nL -= sellers[numSeller].customers.size();
+                nL += sellers[numSeller].customers.size();
                 pL += customerCnt - sellers[numSeller].customers.size();
             }
 
