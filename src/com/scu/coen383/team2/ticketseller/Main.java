@@ -2,6 +2,8 @@ package com.scu.coen383.team2.ticketseller;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 public class Main {
     static Random random = new Random(1234);
@@ -28,16 +30,19 @@ public class Main {
 
         Seller[] sellers = new Seller[10];
 
+        final CyclicBarrier gate = new CyclicBarrier(11);
+
         // initialize 10 sellers
         for (int numSeller = 0; numSeller < 10; numSeller++)
         {
             if (numSeller == 0)
-                sellers[numSeller] = new SellerH(seating, "H" + (numSeller + 1), lock, random);
+                sellers[numSeller] = new SellerH(seating, "H" + (numSeller + 1), lock, random, gate);
             else if (numSeller >= 1 && numSeller < 4)
-                sellers[numSeller] = new SellerM(seating, "M" + (numSeller), lock, random);
+                sellers[numSeller] = new SellerM(seating, "M" + (numSeller), lock, random, gate);
             else if (numSeller >= 4 && numSeller < 10)
-                sellers[numSeller] = new SellerL(seating, "L" + (numSeller - 3), lock, random);
+                sellers[numSeller] = new SellerL(seating, "L" + (numSeller - 3), lock, random, gate);
         }
+
 
         // generate a customer queue for each seller
         Generator.generateCustomers(sellers, customerCnt, random);
@@ -53,6 +58,7 @@ public class Main {
         }
 
 
+
         // create a thread for each seller
         Thread[] threads = new Thread[sellers.length];
 
@@ -64,6 +70,17 @@ public class Main {
             threads[numSellers].start();
 
         }
+
+        //start all the thread at the same time
+        try {
+            gate.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
+        }
+
+
 
         // wait for termination of each thread
         for (int i = 0; i < threads.length ; i++) {
@@ -85,21 +102,5 @@ public class Main {
 
         }
 
-    }
-
-    public static Seat[][] createSeating(int maxRows, int maxCols)
-    {
-        //create 10x10 seating and label with seat numbers
-        Seat[][] seating = new Seat[maxRows][maxCols];
-        int numSeat = 1;
-        for (int row = 0; row < maxRows; row++)
-        {
-            for (int column = 0; column < maxCols; column++)
-            {
-                seating[row][column] = new Seat(numSeat);
-                numSeat++;
-            }
-        }
-        return seating;
     }
 }
