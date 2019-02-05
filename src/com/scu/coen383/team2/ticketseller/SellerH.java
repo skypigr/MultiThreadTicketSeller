@@ -9,8 +9,8 @@ public class SellerH extends Seller {
 
     private Object lock;
     private CyclicBarrier gate;
-    public SellerH(Seat[][] s, String sellerID, Object lk, Random r, CyclicBarrier gate) {
-        super(s, r.nextInt(2) + 1, sellerID, lk, System.currentTimeMillis());
+    public SellerH(Seat[][] s, int[] soldSeatsEachRow, String sellerID, Object lk, Random r, CyclicBarrier gate) {
+        super(s, soldSeatsEachRow, r.nextInt(2) + 1, sellerID, lk, System.currentTimeMillis());
         lock = lk;
         this.gate = gate;
     }
@@ -45,18 +45,16 @@ public class SellerH extends Seller {
                     find_seat:
                     //TODO: use seatIndex for each row to avoid loop the whole Seat Table
                     for (int i = 0; i < seating.length; i++) {
-                        for (int j = 0; j < seating[0].length; j++) {
-                            if (seating[i][j].isSeatEmpty()) {
+                        if (soldSeatsEachRow[i] <= 9) {
+                            // Seat number = (Row x 10) + (Col + 1)
+                            int seatNum = (i*10) + soldSeatsEachRow[i] + 1;
+                            seat = new Seat(seatNum);
+                            assignSeat(customer, seat, i, soldSeatsEachRow[i]);
+                            soldSeatsEachRow[i] ++;
+                            printMsg(customer, seat);
+                            customers.remove();
+                            break find_seat;
 
-                                // Seat number = (Row x 10) + (Col + 1)
-                                int seatNum = (i*10)+j+1;
-                                seat = new Seat(seatNum);
-                                assignSeat(customer, seat, i, j);
-                                printMsg(customer, seat);
-                                customers.remove();
-
-                                break find_seat;
-                            }
                         }
                     }
                 }

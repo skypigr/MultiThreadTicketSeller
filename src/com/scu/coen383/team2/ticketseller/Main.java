@@ -26,21 +26,21 @@ public class Main {
         int maxRows = 10;
         int maxCols = 10;
         Seat[][] seating = new Seat[maxRows][maxCols];
+        int[] soldSeatsEachRow = new int [maxRows];
         Generator.generateSeats(seating, maxCols, maxCols);
 
-        Seller[] sellers = new Seller[10];
 
         final CyclicBarrier gate = new CyclicBarrier(11);
-
+        Seller[] sellers = new Seller[10];
         // initialize 10 sellers
         for (int numSeller = 0; numSeller < 10; numSeller++)
         {
             if (numSeller == 0)
-                sellers[numSeller] = new SellerH(seating, "H" + (numSeller + 1), lock, random, gate);
+                sellers[numSeller] = new SellerH(seating, soldSeatsEachRow, "H" + (numSeller + 1), lock, random, gate);
             else if (numSeller >= 1 && numSeller < 4)
-                sellers[numSeller] = new SellerM(seating, "M" + (numSeller), lock, random, gate);
+                sellers[numSeller] = new SellerM(seating, soldSeatsEachRow, "M" + (numSeller), lock, random, gate);
             else if (numSeller >= 4 && numSeller < 10)
-                sellers[numSeller] = new SellerL(seating, "L" + (numSeller - 3), lock, random, gate);
+                sellers[numSeller] = new SellerL(seating, soldSeatsEachRow, "L" + (numSeller - 3), lock, random, gate);
         }
 
 

@@ -7,8 +7,8 @@ import java.util.concurrent.CyclicBarrier;
 public class SellerL extends Seller {
     private Object lock;
     private  CyclicBarrier gate;
-    public SellerL(Seat[][] s, String sellerID, Object lk, Random r, CyclicBarrier gate) {
-        super(s, r.nextInt(4) + 4, sellerID, lk, System.currentTimeMillis());
+    public SellerL(Seat[][] s, int[] soldSeatsEachRow, String sellerID, Object lk, Random r, CyclicBarrier gate) {
+        super(s, soldSeatsEachRow, r.nextInt(4) + 4, sellerID, lk, System.currentTimeMillis());
         lock = lk;
         this.gate = gate;
 
@@ -42,18 +42,18 @@ public class SellerL extends Seller {
                 if(currentTime  >= (customer.getArrivalTime())){
                     find_seat:
                     for (int i = seating.length-1; i >= 0; i--) {
-                        for (int j = 0; j < seating[0].length; j++) {
-                            if (seating[i][j].isSeatEmpty()) {
-                                // assign seat
-                                // seat number = (Row x 10) + (Col + 1)
-                                int seatNum = (i*10)+j+1;
-                                seat = new Seat(seatNum);
-                                super.assignSeat(customer, seat, i, j);
-                                //update();
-                                printMsg(customer, seat);
-                                customers.remove();
-                                break find_seat;
-                            }
+                        // assign seat
+                        // seat number = (Row x 10) + (Col + 1)
+                        if (soldSeatsEachRow[i] <= 9){
+
+                            int seatNum = (i*10)+soldSeatsEachRow[i]+1;
+                            seat = new Seat(seatNum);
+                            super.assignSeat(customer, seat, i, soldSeatsEachRow[i]);
+                            //update();
+                            soldSeatsEachRow[i] ++;
+                            printMsg(customer, seat);
+                            customers.remove();
+                            break find_seat;
                         }
                     }
                 }
