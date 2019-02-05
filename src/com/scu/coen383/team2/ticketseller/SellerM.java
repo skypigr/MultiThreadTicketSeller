@@ -7,8 +7,8 @@ import java.util.concurrent.CyclicBarrier;
 public class SellerM extends Seller {
     private Object lock;
     private CyclicBarrier gate;
-    public SellerM(Seat[][] s, String sellerID, Object lk, Random r, CyclicBarrier gate) {
-        super(s, r.nextInt(2) + 1, sellerID, lk, System.currentTimeMillis());
+    public SellerM(Seat[][] s, int[] soldSeatsEachRow, int totalSold,String sellerID, Object lk, Random r, CyclicBarrier gate) {
+        super(s, soldSeatsEachRow,  totalSold,r.nextInt(2) + 1, sellerID, lk, System.currentTimeMillis());
         lock = lk;
         this.gate = gate;
     }
@@ -24,7 +24,7 @@ public class SellerM extends Seller {
 
         while (!customers.isEmpty()) {
             Customer customer;
-            if (customers.isEmpty()) return;
+            if (customers.isEmpty() || 100 <= totalSold) return;
 
 
             update();
@@ -44,18 +44,19 @@ public class SellerM extends Seller {
                 if(currentTime  >= (customer.getArrivalTime())){
                     find_seat:
                     for(int i = 5; i >= 0 && i < seating.length;) {
-                        for (int j = 0; j < seating[0].length; j++) {
-                            if (seating[i][j].isSeatEmpty()) {
-                                // Assign seat to customer
-                                // Seat number = (Row x 10) + (Col + 1)
-                                int seatNum = (i*10)+j+1;
-                                seat = new Seat(seatNum);
-                                super.assignSeat(customer, seat, i, j);
-                                //update();
-                                printMsg(customer, seat);
-                                customers.remove();
-                                break find_seat;
-                            }
+                        if (soldSeatsEachRow[i] <= 9){
+
+                            // Assign seat to customer
+                            // Seat number = (Row x 10) + (Col + 1)
+                            int seatNum = (i * 10) + soldSeatsEachRow[i] + 1;
+                            seat = new Seat(seatNum);
+                            super.assignSeat(customer, seat, i, soldSeatsEachRow[i]);
+                            //update();
+                            soldSeatsEachRow[i] ++;
+                            printMsg(customer, seat);
+                            customers.remove();
+                            break find_seat;
+
                         }
                         if(flag == true){
                             i += counter;
@@ -67,8 +68,6 @@ public class SellerM extends Seller {
                         }
                         counter++;
                     }
-
-
                 }
             }
             if(seat != null){
@@ -79,8 +78,6 @@ public class SellerM extends Seller {
                     e.printStackTrace();
                 }
             }
-
-
         }
     }
 
