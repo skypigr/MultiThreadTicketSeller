@@ -6,7 +6,6 @@ import java.util.concurrent.CyclicBarrier;
 
 public class SellerH extends Seller {
 
-
     private Object lock;
     private CyclicBarrier gate;
     public SellerH(Seat[][] s, int[] soldSeatsEachRow, int[] totalSold, String sellerID, Object lk, Random r, CyclicBarrier gate) {
@@ -26,34 +25,31 @@ public class SellerH extends Seller {
 
 
         while (!customers.isEmpty()) {
-
             Customer customer = null;
             if(customers.isEmpty() || 100 <= totalSold[0]){
                 return;
-            }
-            else if (currentTime < customers.peek().getArrivalTime()){
+            } else if (currentTime < customers.peek().getArrivalTime()){
                 try {
                     Thread.sleep(1 * 1000);
                     update();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
             update();
 
-            if(currentTime <= 59)
+            if(currentTime <= 59) {
                 customer = customers.peek();
-            else
+            } else {
                 return;
+            }
             Seat seat = null;
 
             synchronized(lock) {
-
                 update();
                 if(currentTime  >= (customer.getArrivalTime())){
                     find_seat:
-                    //TODO: use seatIndex for each row to avoid loop the whole Seat Table
+                    //Use seatIndex for each row to avoid loop the whole Seat Table
                     for (int i = 0; i < seating.length; i++) {
                         if (soldSeatsEachRow[i] <= 9) {
                             // Seat number = (Row x 10) + (Col + 1)
@@ -65,7 +61,6 @@ public class SellerH extends Seller {
                             printMsg(customer, seat);
                             customers.remove();
                             break find_seat;
-
                         }
                     }
                 }
@@ -75,7 +70,6 @@ public class SellerH extends Seller {
                     Thread.sleep(serviceTime * 1000);
                     update();
                 } catch (InterruptedException e) {
-
                     e.printStackTrace();
                 }
             }

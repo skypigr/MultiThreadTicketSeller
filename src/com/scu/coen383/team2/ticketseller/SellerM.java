@@ -26,8 +26,7 @@ public class SellerM extends Seller {
             Customer customer;
             if(customers.isEmpty() || 100 <= totalSold[0]){
                 return;
-            }
-            else if (currentTime < customers.peek().getArrivalTime()){
+            } else if (currentTime < customers.peek().getArrivalTime()){
                 try {
                     Thread.sleep(1 * 1000);
                     update();
@@ -39,17 +38,17 @@ public class SellerM extends Seller {
 
 
             update();
-            if(currentTime <= 59)
+            if(currentTime <= 59) {
                 customer = customers.peek();
-            else
+            } else {
                 return;
+            }
             boolean flag = true;
             int counter = 1;
 
             Seat seat = null;
 
             synchronized(lock) {
-
                 update();
                 if(currentTime  >= (customer.getArrivalTime())){
                     find_seat:
