@@ -1,29 +1,28 @@
 package com.scu.coen383.team2.ticketseller;
 
-
 public class Seat {
 
     private int seatNum;
-    private Customer seatTaken;
+    private Customer customer;
 
-    public Seat(int num) {
-        seatNum = num;
-        seatTaken = null;
+    public Seat(int seatNum) {
+        this.seatNum = seatNum;
+        customer = null;
     }
 
-    public int getSeatNumber() {
+    public int getSeatNum() {
         return seatNum;
     }
 
     public Customer getCustomer() {
-        return seatTaken;
+        return customer;
     }
 
-    public void assignSeat(Customer c) {
-        seatTaken = c;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public boolean isSeatEmpty() {
-        return seatTaken == null;
+        return customer == null;
     }
 }
