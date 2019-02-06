@@ -23,11 +23,9 @@ public class SellerL extends Seller {
             e.printStackTrace();
         }
 
-        while (!customers.isEmpty()) {
+        while (!customers.isEmpty() && totalSold[0] < 100) {
             Customer customer;
-            if(customers.isEmpty() || 100 <= totalSold[0]){
-                return;
-            } else if (currentTime < customers.peek().getArrivalTime()){
+            if (currentTime < customers.peek().getArrivalTime()){
                 try {
                     Thread.sleep(1 * 1000);
                     update();
