@@ -25,13 +25,9 @@ public class SellerH extends Seller {
         }
 
 
-        while (!customers.isEmpty()) {
-
-            Customer customer = null;
-            if(customers.isEmpty() || 100 <= totalSold[0]){
-                return;
-            }
-            else if (currentTime < customers.peek().getArrivalTime()){
+        while (!customers.isEmpty() && totalSold[0] < 100) {
+            Customer customer;
+            if (currentTime < customers.peek().getArrivalTime()){
                 try {
                     Thread.sleep(1 * 1000);
                     update();
